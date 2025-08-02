@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TradeRiserApplication<trade-riser>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.app.trade_riser.TradeRiserApplication",
+            "projectName": "trade-riser",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
