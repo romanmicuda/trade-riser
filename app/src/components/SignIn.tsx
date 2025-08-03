@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
+import { useGlobalContext } from "./contexts/GlobalContext";
 
 type SignInFormValues = {
     username: string;
@@ -11,10 +12,10 @@ type SignInFormValues = {
 
 const SignIn = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<SignInFormValues>();
-    
-    const onSubmit = (data: SignInFormValues) => {
-        console.log(data);
-        // Handle authentication logic here
+    const { signin } = useGlobalContext();
+
+    const onSubmit = async (data: any) => {
+        await signin(data);
     };
 
     return (

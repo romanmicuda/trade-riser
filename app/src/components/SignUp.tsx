@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useGlobalContext } from "./contexts/GlobalContext";
 
 const SignUp = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,17 +16,11 @@ const SignUp = () => {
     } = useForm();
 
     const password = watch("password");
+    const { signup } = useGlobalContext();
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
-        try {
-            // Handle form submission - API calls would go here
-            console.log(data);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsSubmitting(false);
-        }
+        await signup(data);
     };
 
     return (

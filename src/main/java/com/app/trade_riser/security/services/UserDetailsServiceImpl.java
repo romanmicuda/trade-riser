@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.trade_riser.models.User;
-import com.app.trade_riser.repository.UserRepository;
+import com.app.trade_riser.user.data.User;
+import com.app.trade_riser.user.data.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
