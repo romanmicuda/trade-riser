@@ -1,12 +1,19 @@
-function App() {
+// src/App.jsx or src/App.js
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import { SignIn } from './components/SignIn';
+import { SignUp } from './components/SignUp';
 
+function App() {
   return (
-    <>
-      <div className='flex items-center justify-center p-5'>
-        <h1 className='text-4xl font-bold text-blue-600'>Welcome to Trade Riser</h1>
-      </div>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
