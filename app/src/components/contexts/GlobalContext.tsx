@@ -28,16 +28,17 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     // Check token validity on mount
     useEffect(() => {
         const validateToken = async () => {
-           return await checkToken();
-        };
-        if ((window.location.pathname !== '/signin') && (window.location.pathname !== '/') && 
-        (window.location.pathname !== '/signup') && (window.location.pathname !== '/reset-password') &&
-        (window.location.pathname !== '/update-password') && (window.location.pathname !== '/verify-reset-code')) {
-            const isValid = validateToken();
-            if (!isValid) {
-                logout();
+            if ((window.location.pathname !== '/signin') && (window.location.pathname !== '/') && 
+            (window.location.pathname !== '/signup') && (window.location.pathname !== '/reset-password') &&
+            (window.location.pathname !== '/update-password') && (window.location.pathname !== '/verify-reset-code')) {
+                const isValid = await checkToken();
+                if (!isValid) {
+                    logout();
+                }
             }
-        }
+        };
+        
+        validateToken();
     }, []);
 
     const signup = async (data: any) => {
