@@ -40,4 +40,14 @@ public class AuthController {
    User user = authService.signup(signUpRequest.getUsername(), signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getRole());
    return ResponseEntity.ok(new RegisterResponse(user));
   }
+
+  @PostMapping("/verify")
+  public ResponseEntity<Void> verifyToken(@RequestBody VerifyTokenRequest token) {
+    boolean isValid = authService.verifyToken(token);
+    if (isValid) {
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.status(401).build();
+    }
+  }
 }

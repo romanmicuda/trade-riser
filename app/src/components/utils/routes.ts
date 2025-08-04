@@ -9,6 +9,17 @@ class API {
         this.baseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
         this.token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
     }
+
+    public clearToken(): void {
+        this.token = null;
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('authToken');
+        }
+    }
+
+    public getToken(): string | null {
+        return this.token;
+    }
     
     public setToken(token: string): void {
         this.token = token;

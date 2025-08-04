@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
 import { api } from '../utils/routes';
 
 interface GlobalContextType {
@@ -6,6 +6,8 @@ interface GlobalContextType {
     setIsLoading: (loading: boolean) => void;
     signup: (data: any) => Promise<any>;
     signin: (data: any) => Promise<any>;
+    logout: () => void;
+    checkToken: () => Promise<boolean>;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -16,13 +18,23 @@ interface GlobalProviderProps {
 
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    
+    // Check token validity on mount
+    useEffect(() => {
+        const validateToken = async () => {
+           return await checkToken();
+        };
+        const isValid = validateToken();
+        if (!isValid) {
+            logout();
+        }
+    }, []);
 
     const signup = async (data: any) => {
         setIsLoading(true);
         try {
             const response = await api.post('/api/auth/signup', data);
             if (response.status === 200) {
-                api.setToken(response.data.token);
                 window.location.href = '/signin';
             }
         } catch (error) {
@@ -37,6 +49,7 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         try {
             const response = await api.post('/api/auth/signin', data);
             if (response.status === 200) {
+                api.setToken(response.data.token);
                 window.location.href = '/dashboard';
             }
         } catch (error) {
@@ -45,15 +58,40 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
             setIsLoading(false);
         }
     };
+    
+    const logout = () => {
+        api.clearToken();
+        if ((window.location.pathname !== '/signin') && (window.location.pathname !== '/') && (window.location.pathname !== '/signup')) {
+            window.location.href = '/signin';
+        }
+    };
+    
+    const checkToken = async (): Promise<boolean> => {
+        try {
+            // If there's no token, return false
+            const token = api.getToken();
 
+            if (!token){
+                return false;
+            }
             
+            const response = await api.post('/api/auth/verify', { token });
+            return response.status === 200
+        } catch (error) {
+            // If verification fails, log out
+            logout();
+            return false;
+        }
+    };
 
     // Provide the context value
     const value: GlobalContextType = {
         isLoading,
         setIsLoading,
         signup,
-        signin
+        signin,
+        logout,
+        checkToken
     };
 
     return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;

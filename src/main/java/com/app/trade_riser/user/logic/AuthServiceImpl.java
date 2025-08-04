@@ -20,6 +20,7 @@ import com.app.trade_riser.user.data.Role;
 import com.app.trade_riser.user.data.RoleRepository;
 import com.app.trade_riser.user.data.User;
 import com.app.trade_riser.user.data.UserRepository;
+import com.app.trade_riser.user.web.VerifyTokenRequest;
 import com.app.trade_riser.user.web.bodies.JwtResponse;
 
 @Service
@@ -97,4 +98,17 @@ public class AuthServiceImpl implements AuthService {
     user.setRoles(roles);
     return userRepository.save(user);
   }
+
+    @Override
+    public boolean verifyToken(VerifyTokenRequest token) {
+        try {
+            if (token == null || token.getToken() == null || token.getToken().isEmpty()) {
+                return false;
+            }
+            String jwt = token.getToken().startsWith("Bearer ") ? token.getToken().substring(7) : token.getToken();
+            return jwtUtils.validateJwtToken(jwt);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
