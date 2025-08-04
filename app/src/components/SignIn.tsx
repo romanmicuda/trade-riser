@@ -63,6 +63,15 @@ const SignIn = () => {
                             Create Account
                         </Link>
                     </div>
+                    <div className="text-muted-foreground flex justify-center gap-1 text-sm">
+                        <p>Forgot your password?</p>
+                        <Link
+                            to="/reset-password"
+                            className="text-primary font-medium hover:underline"
+                        >
+                            Reset Password
+                        </Link>
+                    </div>
                 </div>
             </div>
         </section>

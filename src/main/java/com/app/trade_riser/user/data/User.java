@@ -1,5 +1,6 @@
 package com.app.trade_riser.user.data;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -44,6 +45,11 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles;
+
+  // Password reset fields
+  private String resetToken;
+  
+  private LocalDateTime resetTokenExpiration;
 
 
   public User(String username, String email, String password) {

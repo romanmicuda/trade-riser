@@ -50,4 +50,25 @@ public class AuthController {
       return ResponseEntity.status(401).build();
     }
   }
+  @PostMapping("/resetPassword")
+  public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) throws IllegalOperationException {
+    authService.resetPassword(request);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/verifyResetCode")
+  public ResponseEntity<Void> verifyResetCode(@Valid @RequestBody VerifyResetCodeRequest request) {
+    boolean isValid = authService.verifyResetCode(request.getEmail(), request.getCode());
+    if (isValid) {
+      return ResponseEntity.ok().build();
+    } else {
+      return ResponseEntity.status(400).build();
+    }
+  }
+
+  @PostMapping("/updatePassword")
+  public ResponseEntity<Void> updatePassword(@Valid @RequestBody UpdatePasswordRequest request) throws IllegalOperationException {
+    authService.updatePassword(request.getEmail(), request.getCode(), request.getNewPassword());
+    return ResponseEntity.ok().build();
+  }
 }
