@@ -24,9 +24,11 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         const validateToken = async () => {
            return await checkToken();
         };
-        const isValid = validateToken();
-        if (!isValid) {
-            logout();
+        if ((window.location.pathname !== '/signin') && (window.location.pathname !== '/') && (window.location.pathname !== '/signup')) {
+            const isValid = validateToken();
+            if (!isValid) {
+                logout();
+            }
         }
     }, []);
 
@@ -61,9 +63,7 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     
     const logout = () => {
         api.clearToken();
-        if ((window.location.pathname !== '/signin') && (window.location.pathname !== '/') && (window.location.pathname !== '/signup')) {
-            window.location.href = '/signin';
-        }
+        window.location.href = '/signin';
     };
     
     const checkToken = async (): Promise<boolean> => {
