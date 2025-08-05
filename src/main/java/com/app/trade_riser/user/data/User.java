@@ -2,8 +2,13 @@ package com.app.trade_riser.user.data;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import com.app.trade_riser.portfolio.data.Portfolio;
+import com.app.trade_riser.tradingRule.data.TradingRule;
+import com.app.trade_riser.watchlist.data.Watchlist;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -50,6 +55,17 @@ public class User {
   private String resetToken;
   
   private LocalDateTime resetTokenExpiration;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Portfolio> portfolios;
+
+    @OneToMany(mappedBy = "user")
+    private List<Watchlist> watchlists;
+
+    @OneToMany(mappedBy = "user")
+    private List<TradingRule> tradingRules;
+
 
 
   public User(String username, String email, String password) {
